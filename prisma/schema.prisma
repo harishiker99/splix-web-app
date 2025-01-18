@@ -1,6 +1,7 @@
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+
 }
 
 generator client {
@@ -8,9 +9,18 @@ generator client {
 }
 
 model Chat {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   userId    String
-  messages  Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  messages  Message[] // One-to-many relation: a chat has multiple messages
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Message {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  chat   Chat     @relation(fields: [chatId], references: [id])
+  chatId String   @db.ObjectId
+  role   String   // e.g., "user" or "bot"
+  text   String
+  time   DateTime @default(now())
 }
