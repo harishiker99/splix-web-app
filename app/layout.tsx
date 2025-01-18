@@ -3,11 +3,8 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import {
 	ClerkProvider,
-	// SignInButton,
-	// SignedIn,
-	// SignedOut,
-	// UserButton,
 } from "@clerk/nextjs";
+import QueryProvider from "@/components/context/query-provider";
 
 const poppins = Poppins({
 	weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -27,7 +24,7 @@ export default function RootLayout({
 	return (
 		<ClerkProvider>
 			<html lang="en">
-				<body className={`${poppins.variable} antialiased`}>{children}</body>
+				<body className={`${poppins.variable} antialiased`}><QueryProvider>{children}</QueryProvider></body>
 			</html>
 		</ClerkProvider>
 	);
